@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.eden.pm.pojo.EUDataGridResult;
 import cn.eden.pm.pojo.Profile;
 import cn.eden.pm.service.ProfileService;
+import cn.eden.pm.utils.PMResult;
 
 /**
  * 人员管理Controller
@@ -33,6 +34,13 @@ public class ProfileController {
 	@ResponseBody
 	public EUDataGridResult getItemList(Integer page, Integer rows) {
 		EUDataGridResult result = profileService.getProfileList(page, rows);
+		return result;
+	}
+	
+	@RequestMapping("profile/update")
+	@ResponseBody
+	public PMResult updateProfileByPrimaryKey(Profile profile) {
+		PMResult result = profileService.updateProfileByPrimaryKey(profile);
 		return result;
 	}
 	

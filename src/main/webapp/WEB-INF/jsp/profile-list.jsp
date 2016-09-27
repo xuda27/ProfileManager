@@ -16,34 +16,34 @@
 </table>
 <div id="profileEditWindow" class="easyui-window" title="人员修改" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:50%;height:50%;padding:10px;">
 	<form id="profileEditForm" method="post">  
-    <div>  
-        <label for="id">I  D:</label>  
-        <input class="easyui-validatebox" type="text" name="id" data-options="required:false" />  
+    <div style="text-align:center;padding:5px">  
+        <label for="id">编号:</label>  
+        <input class="easyui-validatebox" type="text" name="id" data-options="required:false" readonly="readonly"/>  
     </div>  
-    <div>  
+    <div style="text-align:center;padding:5px">  
         <label for="name">姓名:</label>  
         <input class="easyui-validatebox" type="text" name="name" data-options="required:true" />  
     </div>  
-    <div>  
+    <div style="text-align:center;padding:5px">  
         <label for="birthday">生日:</label>  
         <input class="easyui-validatebox" type="text" name="birthday" data-options="required:true" />  
     </div>
-    <div>  
+    <div style="text-align:center;padding:5px">  
         <label for="gender">性别:</label>
-        <select class="easyui-combobox" name="language">
+        <select class="easyui-combobox" name="gender">
         	<option value="男">男</option>
         	<option value="女">女</option>
         </select>
     </div>
-    <div>  
+    <div style="text-align:center;padding:5px">  
         <label for="career">职业:</label>  
         <input class="easyui-validatebox" type="text" name="career" data-options="required:true" />  
     </div>
-    <div>  
+    <div style="text-align:center;padding:5px">  
         <label for="address">地址:</label>  
         <input class="easyui-validatebox" type="text" name="address" data-options="required:true" />  
     </div>
-    <div>  
+    <div style="text-align:center;padding:5px">  
         <label for="mobile">手机:</label>  
         <input class="easyui-validatebox" type="text" name="mobile" data-options="required:true" />  
     </div>
@@ -55,7 +55,17 @@
 </div>
 <script>
     function submitForm(){
-		$('#profileEditForm').form('submit');
+		$('#profileEditForm').form('submit',{
+			url : "profile/update",
+			success : function(data){
+				if(data.status == 200) {
+					$.messager.alert('提示','修改人员成功!',undefined,function(){
+            			$("#profileList").datagrid("reload");
+            		});
+				}
+			}
+		});
+		
 	}
 	function clearForm(){
 		$('#profileEditForm').form('clear');
@@ -93,10 +103,11 @@
         	}
         	
         	$("#profileEditWindow").window({
-        		onLoad :function(){
-        			//回显数据
+        		onOpen : function(){
+        			//回写数据
         			var data = $("#profileList").datagrid("getSelections")[0];
-        			$("#profileEditForm").form("load",'/profile/'+1);
+        			alert(data);
+        			$("#profileEditForm").form("load",data);
         		}
         	}).window("open");
         }
@@ -106,16 +117,16 @@
         handler:function(){
         	var ids = getSelectionsIds();
         	if(ids.length == 0){
-        		$.messager.alert('提示','未选中商品!');
+        		$.messager.alert('提示','未选中人员!');
         		return ;
         	}
-        	$.messager.confirm('确认','确定删除ID为 '+ids+' 的商品吗？',function(r){
+        	$.messager.confirm('确认','确定删除编号为 '+ids+' 的人员吗？',function(r){
         	    if (r){
         	    	var params = {"ids":ids};
                 	$.post("/rest/item/delete",params, function(data){
             			if(data.status == 200){
             				$.messager.alert('提示','删除商品成功!',undefined,function(){
-            					$("#itemList").datagrid("reload");
+            					$("#profileList").datagrid("reload");
             				});
             			}
             		});

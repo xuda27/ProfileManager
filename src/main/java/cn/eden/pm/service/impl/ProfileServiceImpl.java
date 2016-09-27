@@ -15,6 +15,7 @@ import cn.eden.pm.pojo.Profile;
 import cn.eden.pm.pojo.ProfileExample;
 import cn.eden.pm.pojo.ProfileExample.Criteria;
 import cn.eden.pm.service.ProfileService;
+import cn.eden.pm.utils.PMResult;
 /**
  * 人员管理service
  * @author Eden
@@ -56,6 +57,19 @@ public class ProfileServiceImpl implements ProfileService {
 		PageInfo<Profile> pageInfo = new PageInfo<Profile>(list);
 		result.setTotal(pageInfo.getTotal());
 		return result;
+	}
+
+	
+	/**
+	 * 如果更新成功返回ok
+	 */
+	@Override
+	public PMResult updateProfileByPrimaryKey(Profile profile) {
+		int result = profileMapper.updateByPrimaryKey(profile);
+		if(result > 0) {
+			return PMResult.ok();
+		}
+		return null;
 	}
 
 }
