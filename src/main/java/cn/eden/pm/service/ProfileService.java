@@ -12,4 +12,6 @@ public interface ProfileService {
 	EUDataGridResult getProfileList(int page, int rows); 
 	
 	PMResult updateProfileByPrimaryKey(Profile profile);
+	
+	PMResult insertProfile(Profile profile);
 }

@@ -72,4 +72,13 @@ public class ProfileServiceImpl implements ProfileService {
 		return null;
 	}
 
+	@Override
+	public PMResult insertProfile(Profile profile) {
+		int result = profileMapper.insert(profile);
+		if(result > 0) {
+			return PMResult.ok();
+		}
+		return null;
+	}
+
 }

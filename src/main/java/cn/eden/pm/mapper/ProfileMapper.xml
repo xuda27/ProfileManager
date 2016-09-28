@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.eden.pm.pojo.Profile" >
     <id column="ID" property="id" jdbcType="DECIMAL" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="BIRTHDAY" property="birthday" jdbcType="DATE" />
+    <result column="BIRTHDAY" property="birthday" jdbcType="VARCHAR" />
     <result column="GENDER" property="gender" jdbcType="VARCHAR" />
     <result column="CAREER" property="career" jdbcType="VARCHAR" />
     <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
@@ -105,7 +105,7 @@
     insert into PROFILE (ID, NAME, BIRTHDAY, 
       GENDER, CAREER, ADDRESS, 
       MOBILE)
-    values (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+    values (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, 
       #{gender,jdbcType=VARCHAR}, #{career,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR})
   </insert>
@@ -142,7 +142,7 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="birthday != null" >
-        #{birthday,jdbcType=DATE},
+        #{birthday,jdbcType=VARCHAR},
       </if>
       <if test="gender != null" >
         #{gender,jdbcType=VARCHAR},
@@ -174,7 +174,7 @@
         NAME = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.birthday != null" >
-        BIRTHDAY = #{record.birthday,jdbcType=DATE},
+        BIRTHDAY = #{record.birthday,jdbcType=VARCHAR},
       </if>
       <if test="record.gender != null" >
         GENDER = #{record.gender,jdbcType=VARCHAR},
@@ -197,7 +197,7 @@
     update PROFILE
     set ID = #{record.id,jdbcType=DECIMAL},
       NAME = #{record.name,jdbcType=VARCHAR},
-      BIRTHDAY = #{record.birthday,jdbcType=DATE},
+      BIRTHDAY = #{record.birthday,jdbcType=VARCHAR},
       GENDER = #{record.gender,jdbcType=VARCHAR},
       CAREER = #{record.career,jdbcType=VARCHAR},
       ADDRESS = #{record.address,jdbcType=VARCHAR},
@@ -213,7 +213,7 @@
         NAME = #{name,jdbcType=VARCHAR},
       </if>
       <if test="birthday != null" >
-        BIRTHDAY = #{birthday,jdbcType=DATE},
+        BIRTHDAY = #{birthday,jdbcType=VARCHAR},
       </if>
       <if test="gender != null" >
         GENDER = #{gender,jdbcType=VARCHAR},
@@ -233,7 +233,7 @@
   <update id="updateByPrimaryKey" parameterType="cn.eden.pm.pojo.Profile" >
     update PROFILE
     set NAME = #{name,jdbcType=VARCHAR},
-      BIRTHDAY = #{birthday,jdbcType=DATE},
+      BIRTHDAY = #{birthday,jdbcType=VARCHAR},
       GENDER = #{gender,jdbcType=VARCHAR},
       CAREER = #{career,jdbcType=VARCHAR},
       ADDRESS = #{address,jdbcType=VARCHAR},

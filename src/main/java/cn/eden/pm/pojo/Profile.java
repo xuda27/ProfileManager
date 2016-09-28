@@ -1,14 +1,13 @@
 package cn.eden.pm.pojo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class Profile {
     private BigDecimal id;
 
     private String name;
 
-    private Date birthday;
+    private String birthday;
 
     private String gender;
 
@@ -34,12 +33,12 @@ public class Profile {
         this.name = name == null ? null : name.trim();
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday == null ? null : birthday.trim();
     }
 
     public String getGender() {

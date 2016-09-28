@@ -14,11 +14,12 @@
         </tr>
     </thead>
 </table>
-<div id="profileEditWindow" class="easyui-window" title="人员修改" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:50%;height:50%;padding:10px;">
+<!-- 人员修改表  -->
+<div id="profileEditWindow" class="easyui-window" title="人员修改" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:30%;height:55%;padding:10px;">
 	<form id="profileEditForm" method="post">  
     <div style="text-align:center;padding:5px">  
         <label for="id">编号:</label>  
-        <input class="easyui-validatebox" type="text" name="id" data-options="required:false" readonly="readonly"/>  
+        <input class="easyui-numberbox" type="text" name="id" data-options="required:false" readonly="readonly"/>  
     </div>  
     <div style="text-align:center;padding:5px">  
         <label for="name">姓名:</label>  
@@ -49,26 +50,89 @@
     </div>
 </form>
 <div style="text-align:center;padding:5px">
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">提交</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">重置</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitEditForm()">提交</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearEditForm()">重置</a>
+</div>  
+</div>
+<!-- 人员新增窗口  -->
+<div id="profileAddWindow" class="easyui-window" title="人员新增" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:30%;height:55%;padding:10px;">
+	<form id="profileAddForm" method="post">  
+    <div style="text-align:center;padding:5px">  
+        <label for="id">编号:</label>  
+        <input class="easyui-numberbox" type="text" name="id" data-options="required:false"/>  
+    </div>  
+    <div style="text-align:center;padding:5px">  
+        <label for="name">姓名:</label>  
+        <input class="easyui-validatebox" type="text" name="name" data-options="required:true" />  
+    </div>  
+    <div style="text-align:center;padding:5px">  
+        <label for="birthday">生日:</label>  
+        <input class="easyui-validatebox" type="text" name="birthday" data-options="required:true" />  
+    </div>
+    <div style="text-align:center;padding:5px">  
+        <label for="gender">性别:</label>
+        <select class="easyui-combobox" name="gender">
+        	<option value="男">男</option>
+        	<option value="女">女</option>
+        </select>
+    </div>
+    <div style="text-align:center;padding:5px">  
+        <label for="career">职业:</label>  
+        <input class="easyui-validatebox" type="text" name="career" data-options="required:true" />  
+    </div>
+    <div style="text-align:center;padding:5px">  
+        <label for="address">地址:</label>  
+        <input class="easyui-validatebox" type="text" name="address" data-options="required:true" />  
+    </div>
+    <div style="text-align:center;padding:5px">  
+        <label for="mobile">手机:</label>  
+        <input class="easyui-validatebox" type="text" name="mobile" data-options="required:true" />  
+    </div>
+</form>
+<div style="text-align:center;padding:5px">
+	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitAddForm()">提交</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearAddForm()">重置</a>
 </div>  
 </div>
 <script>
-    function submitForm(){
-		$('#profileEditForm').form('submit',{
-			url : "profile/update",
-			success : function(data){
-				if(data.status == 200) {
-					$.messager.alert('提示','修改人员成功!',undefined,function(){
-            			$("#profileList").datagrid("reload");
-            		});
-				}
+    function submitEditForm(){
+		//有效性验证
+		if(!$('#profileEditForm').form('validate')){
+			$.messager.alert('提示','表单还未填写完成!');
+			return ;
+		}
+		$.post("/profile/update", $("#profileEditForm").serialize(), function(data){
+			if(data && data.status == 200){
+				$.messager.alert('提示','修改人员成功!');
+				$("#profileEditWindow").window("close");
+				$("#profileList").datagrid("reload"); 
+			}else{
+				$.messager.alert('出错','修改人员失败!');
 			}
 		});
-		
 	}
-	function clearForm(){
+	function clearEditForm(){
 		$('#profileEditForm').form('clear');
+	}
+	
+	function submitAddForm(){
+		//有效性验证
+		if(!$('#profileAddForm').form('validate')){
+			$.messager.alert('提示','表单还未填写完成!');
+			return ;
+		}
+		$.post("/profile/insert", $("#profileAddForm").serialize(), function(data){
+			if( data && data.status == 200){
+				$.messager.alert('提示','新增人员成功!');
+				$("#profileAddWindow").window("close");
+				$("#profileList").datagrid("reload"); 
+			}else{
+				$.messager.alert('出错','新增人员失败!');
+			}
+		});
+	}
+	function clearAddForm(){
+		$('#profileAddForm').form('clear');
 	}
 	
     function getSelectionsIds(){
@@ -86,7 +150,11 @@
         text:'新增',
         iconCls:'icon-add',
         handler:function(){
-        	$(".tree-title:contains('新增商品')").parent().click();
+        	$("#profileAddWindow").window({
+        		onOpen : function(){
+        			$.messager.alert('提示','请您按格式添加信息');
+        		}
+        	}).window("open");
         }
     },{
         text:'修改',
@@ -106,7 +174,6 @@
         		onOpen : function(){
         			//回写数据
         			var data = $("#profileList").datagrid("getSelections")[0];
-        			alert(data);
         			$("#profileEditForm").form("load",data);
         		}
         	}).window("open");
@@ -123,7 +190,7 @@
         	$.messager.confirm('确认','确定删除编号为 '+ids+' 的人员吗？',function(r){
         	    if (r){
         	    	var params = {"ids":ids};
-                	$.post("/rest/item/delete",params, function(data){
+                	$.post("/profile/delete",params, function(data){
             			if(data.status == 200){
             				$.messager.alert('提示','删除商品成功!',undefined,function(){
             					$("#profileList").datagrid("reload");

@@ -15,7 +15,7 @@
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		destroy-method="close">
 		<property name="url" value="${url}" />
-		<property name="username" value="xuda" />
+		<property name="username" value="scott" />
 		<property name="password" value="a" />
 		<property name="driverClassName" value="${driver}" />
 		<!-- 初始化连接大小 -->  
