@@ -1,6 +1,7 @@
 package cn.eden.pm.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,23 @@ public class ProfileServiceImpl implements ProfileService {
 	public PMResult insertProfile(Profile profile) {
 		int result = profileMapper.insert(profile);
 		if(result > 0) {
+			return PMResult.ok();
+		}
+		return null;
+	}
+
+	@Override
+	public PMResult deleteProfile(String ids) {
+		String[] idsArray = ids.split(",");
+		List<BigDecimal> values = new ArrayList<BigDecimal>();
+		for(String id : idsArray) {
+			values.add(BigDecimal.valueOf((Long.parseLong(id))));
+		}
+		ProfileExample example = new ProfileExample();
+		Criteria c = example.createCriteria();
+		c.andIdIn(values);
+		int result = profileMapper.deleteByExample(example);
+		if(result > 0){
 			return PMResult.ok();
 		}
 		return null;

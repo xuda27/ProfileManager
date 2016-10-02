@@ -22,3 +22,5 @@ select * from profile where id=1
 
 ### 5.controller层
 接收页面请求人员id，调用service查询人员信息，直接返回json数据。
+
+

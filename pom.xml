@@ -89,11 +89,11 @@
 			<artifactId>oracle-driver-ojdbc6</artifactId>
 			<version>12.1.0.1</version>
 		</dependency>
-		<!-- 数据库连接池druid -->
+		<!-- 数据库连接池 -->
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>1.0.20</version>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
 		</dependency>
 		<!-- 分页插件 -->
 		<dependency>

@@ -51,4 +51,11 @@ public class ProfileController {
 		PMResult result = profileService.insertProfile(profile);
 		return result;
 	}
+	
+	@RequestMapping(value="/profile/delete", method=RequestMethod.POST)
+	@ResponseBody
+	public PMResult deleteProfile(String ids) {
+		PMResult result = profileService.deleteProfile(ids);
+		return result;
+	}
 }

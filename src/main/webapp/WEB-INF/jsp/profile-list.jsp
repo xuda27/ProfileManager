@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <table class="easyui-datagrid" id="profileList" title="人员列表" 
-       data-options="singleSelect:false,collapsible:true,pagination:true,url:'/profile/list',method:'get',pageSize:30,toolbar:toolbar">
+       data-options="singleSelect:false,collapsible:true,pagination:true,url:'/profile/list',method:'get',pageSize:20,toolbar:toolbar">
     <thead>
         <tr>
         	<th data-options="field:'ck',checkbox:true"></th>
@@ -104,6 +104,7 @@
 		$.post("/profile/update", $("#profileEditForm").serialize(), function(data){
 			if(data && data.status == 200){
 				$.messager.alert('提示','修改人员成功!');
+				clearEditForm();
 				$("#profileEditWindow").window("close");
 				$("#profileList").datagrid("reload"); 
 			}else{
@@ -124,6 +125,7 @@
 		$.post("/profile/insert", $("#profileAddForm").serialize(), function(data){
 			if( data && data.status == 200){
 				$.messager.alert('提示','新增人员成功!');
+				clearAddForm();
 				$("#profileAddWindow").window("close");
 				$("#profileList").datagrid("reload"); 
 			}else{
@@ -150,11 +152,7 @@
         text:'新增',
         iconCls:'icon-add',
         handler:function(){
-        	$("#profileAddWindow").window({
-        		onOpen : function(){
-        			$.messager.alert('提示','请您按格式添加信息');
-        		}
-        	}).window("open");
+        	$("#profileAddWindow").window("open");
         }
     },{
         text:'修改',
@@ -170,13 +168,13 @@
         		return ;
         	}
         	
-        	$("#profileEditWindow").window({
+        	$("#profileEditWindow").window("open").window({
         		onOpen : function(){
         			//回写数据
         			var data = $("#profileList").datagrid("getSelections")[0];
         			$("#profileEditForm").form("load",data);
         		}
-        	}).window("open");
+        	});
         }
     },{
         text:'删除',
@@ -191,10 +189,19 @@
         	    if (r){
         	    	var params = {"ids":ids};
                 	$.post("/profile/delete",params, function(data){
-            			if(data.status == 200){
-            				$.messager.alert('提示','删除商品成功!',undefined,function(){
+            			if(data && data.status == 200){
+            				/* $.messager.('提示','删除人员成功!',undefined,function(){
             					$("#profileList").datagrid("reload");
-            				});
+            				}); */
+            				$.messager.show({
+								title:'提示',
+								msg:'删除人员成功!',
+								timeout:5000,
+								showType:'slide'
+							});
+							$("#profileList").datagrid("reload");
+            			} else {
+            				$.messager.alert('Warning','GG思密达');  
             			}
             		});
         	    }

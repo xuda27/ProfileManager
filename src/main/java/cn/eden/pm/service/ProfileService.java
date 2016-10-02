@@ -14,4 +14,6 @@ public interface ProfileService {
 	PMResult updateProfileByPrimaryKey(Profile profile);
 	
 	PMResult insertProfile(Profile profile);
+	
+	PMResult deleteProfile(String ids);
 }
